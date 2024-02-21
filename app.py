@@ -46,6 +46,31 @@ def upload_files():
     upload_dir = os.path.join(app.config['BASE_UPLOAD_FOLDER'], uuid.uuid4().hex)
     os.makedirs(upload_dir, exist_ok=True)
 
+    # Assuming the language code is part of the form data
+    language = request.form.get('language', 'english')  # Default to English if not provided
+
+    if language == 'english':
+        character = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    elif language == 'chinese':
+        # Include your Chinese character set here
+        character = '的一是在不了有和人这中大为上个国我以要他时来用们生到作地于出就分对成会可主发年动同工也能下过子说产种面而方后多定行学法所民得经十三之进样道理体知世什二期等十用'
+    elif language == 'vietnamese':
+        character = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ'
+    elif language == 'spanish':
+        character = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZáéíñóúüÁÉÍÑÓÚÜ'
+    elif language == 'italian':
+        character = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZàèéìíîòóùú'
+    elif language == 'french':
+        character = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZàâçéèêëîïôûùüÿ'
+    elif language == 'german':
+        character = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZäöüßÄÖÜ'
+    elif language == 'thai':
+        # Include a basic set of Thai characters; you might need to add more
+        character = '0123456789กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรลวศษสหฬอ'
+    elif language == 'korean':
+        # Include a basic set of Korean characters; you might need to extend this
+        character = '0123456789가각간갇갈감갑강개객거건걸검겁게겨격결겸경계고곡곤골공과관광구국군굴권귀규균귤그극금급기긴길김끼나낙난날남납내녀년념녕노농뇌누눈뉴느늑는니다단달담답당'
+
     results = []
 
     for file in files:
@@ -60,7 +85,7 @@ def upload_files():
             # Run the model
             result = os.popen(f'CUDA_VISIBLE_DEVICES=0 python3 {MODEL_FOLDER}/demo.py \
                     --Transformation TPS --FeatureExtraction ResNet --SequenceModeling BiLSTM --Prediction Attn \
-                    --image_folder {upload_dir}/ --saved_model {model_path} --character "{opt.character}"').read()
+                    --image_folder {upload_dir}/ --saved_model {model_path} --character "{character}"').read()
 
 
             # Extract recognized texts for the image
