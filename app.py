@@ -71,6 +71,7 @@ def upload_files():
 
     results = []
 
+    print(character)
     for file in files:
         if file:  # if file is not empty
             filename = secure_filename(file.filename)
