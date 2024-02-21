@@ -12,9 +12,7 @@ BASE_UPLOAD_FOLDER = 'uploads'
 os.makedirs(BASE_UPLOAD_FOLDER, exist_ok=True)
 app.config['BASE_UPLOAD_FOLDER'] = BASE_UPLOAD_FOLDER
 
-# Define the path for models
-MODEL_FOLDER = 'deep-text-recognition-benchmark'
-os.makedirs(MODEL_FOLDER, exist_ok=True)
+# Define the path for models: no need
 
 # Define the models
 models = {
@@ -28,7 +26,7 @@ models = {
 
 # Download models if they don't already exist
 for k, v in models.items():
-    model_path = os.path.join(MODEL_FOLDER, k)
+    model_path = os.path.join('', k)
     if not os.path.exists(model_path):
         os.system(f'gdown -O {model_path} "{v}"')
 
@@ -80,7 +78,7 @@ def upload_files():
             file.save(file_path)
 
             # Add your own conditions to select the model based on the language_code or other criteria
-            model_path = os.path.join(MODEL_FOLDER, "TPS-ResNet-BiLSTM-Attn.pth")
+            model_path = "TPS-ResNet-BiLSTM-Attn.pth"
 
             # Run the model
             result = os.popen(f'CUDA_VISIBLE_DEVICES=0 python3 demo.py \
