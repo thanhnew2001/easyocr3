@@ -10,7 +10,28 @@ _Steps: _
 
 2. Install: pip install -r requirements.txt
 3. Run: python3 app.py
-4. Test: curl -X POST -F "file=@demo_1.jpg" -F "language=english" http://localhost:5000/upload
+4. Test:
+
+curl -X POST -F "files=@demo_image/demo_1.png" -F "files=@demo_image/demo_2.png" http://localhost:5000/upload 
+
+**Results:**
+{
+  "results": [
+    {
+      "filename": "demo_1.png",
+      "recognized_labels": [
+        "available"
+      ]
+    },
+    {
+      "filename": "demo_2.png",
+      "recognized_labels": [
+        "shakeshack"
+      ]
+    }
+  ]
+}
+
 
 **List of language code:**
 ['english', 'chinese', 'vietnamese', 'spanish', 'italian', 'french', 'german', 'thai', 'korean']
