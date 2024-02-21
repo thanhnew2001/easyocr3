@@ -120,6 +120,29 @@ if __name__ == '__main__':
 
     opt = parser.parse_args()
 
+    if opt.language == 'english':
+        opt.character = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    elif opt.language == 'chinese':
+        # Include your Chinese character set here
+        opt.character = '的一是在不了有和人这中大为上个国我以要他时来用们生到作地于出就分对成会可主发年动同工也能下过子说产种面而方后多定行学法所民得经十三之进样道理体知世什二期等十用'
+    elif opt.language == 'vietnamese':
+        opt.character = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ'
+    elif opt.language == 'spanish':
+        opt.character = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZáéíñóúüÁÉÍÑÓÚÜ'
+    elif opt.language == 'italian':
+        opt.character = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZàèéìíîòóùú'
+    elif opt.language == 'french':
+        opt.character = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZàâçéèêëîïôûùüÿ'
+    elif opt.language == 'german':
+        opt.character = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZäöüßÄÖÜ'
+    elif opt.language == 'thai':
+        # Include a basic set of Thai characters; you might need to add more
+        opt.character = '0123456789กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรลวศษสหฬอ'
+    elif opt.language == 'korean':
+        # Include a basic set of Korean characters; you might need to extend this
+        opt.character = '0123456789가각간갇갈감갑강개객거건걸검겁게겨격결겸경계고곡곤골공과관광구국군굴권귀규균귤그극금급기긴길김끼나낙난날남납내녀년념녕노농뇌누눈뉴느늑는니다단달담답당'
+
+
     """ vocab / character number configuration """
     if opt.sensitive:
         opt.character = string.printable[:-6]  # same with ASTER setting (use 94 char).
