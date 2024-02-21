@@ -4,6 +4,7 @@ It is recommended to use virtual environment to ensure no problem with package v
 
 python3 -m venv venv
 source venv/bin/activate
+
 _Steps: _
 
 1. Clone repo: git clone https://github.com/thanhnew2001/easyocr3
