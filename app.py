@@ -59,8 +59,9 @@ def upload_files():
 
             # Run the model
             result = os.popen(f'CUDA_VISIBLE_DEVICES=0 python3 {MODEL_FOLDER}/demo.py \
-                                --Transformation TPS --FeatureExtraction ResNet --SequenceModeling BiLSTM --Prediction Attn \
-                                --image_folder {upload_dir}/ --saved_model {model_path}').read()
+                    --Transformation TPS --FeatureExtraction ResNet --SequenceModeling BiLSTM --Prediction Attn \
+                    --image_folder {upload_dir}/ --saved_model {model_path} --character "{opt.character}"').read()
+
 
             # Extract recognized texts for the image
             recognized_labels = extract_predicted_labels(result)
