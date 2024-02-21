@@ -83,7 +83,7 @@ def upload_files():
             model_path = os.path.join(MODEL_FOLDER, "TPS-ResNet-BiLSTM-Attn.pth")
 
             # Run the model
-            result = os.popen(f'CUDA_VISIBLE_DEVICES=0 python3 {MODEL_FOLDER}/demo.py \
+            result = os.popen(f'CUDA_VISIBLE_DEVICES=0 python3 demo.py \
                     --Transformation TPS --FeatureExtraction ResNet --SequenceModeling BiLSTM --Prediction Attn \
                     --image_folder {upload_dir}/ --saved_model {model_path} --character "{character}"').read()
 
