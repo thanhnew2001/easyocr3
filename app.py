@@ -71,9 +71,6 @@ def upload_files():
 
     results = []
 
-    character = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    print(character)
-
     for file in files:
         if file:  # if file is not empty
             filename = secure_filename(file.filename)
@@ -86,7 +83,7 @@ def upload_files():
             # Run the model
             result = os.popen(f"CUDA_VISIBLE_DEVICES=0 python3 demo.py \
                     --Transformation TPS --FeatureExtraction ResNet --SequenceModeling BiLSTM --Prediction Attn \
-                    --image_folder {upload_dir}/ --saved_model {model_path} --character '{character}'").read()
+                    --image_folder {upload_dir}/ --saved_model {model_path}").read()
 
 
             # Extract recognized texts for the image
