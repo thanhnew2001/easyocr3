@@ -10,7 +10,7 @@ _Steps: _
 1. Clone repo: git clone https://github.com/thanhnew2001/easyocr3
 
 2. Install: pip install -r requirements.txt
-3. Run: python3 app3.py
+3. Run: python3 app.py
 4. Test:
 
 curl -X POST -F "file=@chen.jpg" -F "source_lang=zh" -F "target_lang=en"  http://localhost:5000/upload --output result16.jpg
