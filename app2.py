@@ -1,10 +1,9 @@
 from flask import send_file, Flask, request, after_this_request
 import os
 import easyocr
-from PIL import Image
+from PIL import Image, ImageDraw
 import io
-import numpy as np
-
+import numpy as np  # Add this line
 
 app = Flask(__name__)
 
@@ -23,20 +22,20 @@ def upload_file():
         image_bytes = file.read()
         image = Image.open(io.BytesIO(image_bytes))
         
-        # Process the image
-        result = reader.readtext(np.array(image), detail=0)  # detail=0 for simpler output
+        # Process the image with EasyOCR
+        # The result will include bounding boxes and text, adjust according to your needs
+        result = reader.readtext(np.array(image), detail=0)  # Using numpy to convert PIL Image to numpy array
 
-        # Create a new image with bounding boxes
-        # Example code for drawing bounding boxes (modify as needed):
+        # Create a new image with bounding boxes (if required)
         draw = ImageDraw.Draw(image)
-        for detection in reader.readtext(np.array(image)):
+        for detection in reader.readtext(np.array(image)):  # Convert image to numpy array again for EasyOCR
             top_left = tuple(detection[0][0])
             bottom_right = tuple(detection[0][2])
             text = detection[1]
             draw.rectangle([top_left, bottom_right], outline='red')
             draw.text(top_left, text, fill='red')
 
-        # Convert the Image object back to bytes
+        # Convert the Image object back to bytes for response
         img_byte_arr = io.BytesIO()
         image.save(img_byte_arr, format='JPEG')
         img_byte_arr = img_byte_arr.getvalue()
@@ -44,14 +43,13 @@ def upload_file():
         # Clean up after sending the file
         @after_this_request
         def remove_file(response):
-            # If you saved any temporary files, delete them here
             return response
 
         return send_file(
             io.BytesIO(img_byte_arr),
-            mimetype='image/jpeg',  # MIME type for JPEG
-            as_attachment=True,     # Offer the file for download
-            attachment_filename='result.jpg'  # Define the name of the download file
+            mimetype='image/jpeg',
+            as_attachment=True,
+            attachment_filename='result.jpg'
         )
 
 if __name__ == '__main__':
