@@ -76,6 +76,90 @@ text = "How are you today"
 detected_language = detect_language_all_languages(text)
 print(f"The language of the text '{text}' is: {detected_language}")
 
+def language_to_iso(detected_language):
+    language_iso_map = {
+        Language.AFRIKAANS: 'af',
+        Language.ALBANIAN: 'sq',
+        Language.ARABIC: 'ar',
+        Language.ARMENIAN: 'hy',
+        Language.AZERBAIJANI: 'az',
+        Language.BASQUE: 'eu',
+        Language.BELARUSIAN: 'be',
+        Language.BENGALI: 'bn',
+        Language.BOKMAL: 'nb',
+        Language.BOSNIAN: 'bs',
+        Language.BULGARIAN: 'bg',
+        Language.CATALAN: 'ca',
+        Language.CHINESE: 'zh',
+        Language.CROATIAN: 'hr',
+        Language.CZECH: 'cs',
+        Language.DANISH: 'da',
+        Language.DUTCH: 'nl',
+        Language.ENGLISH: 'en',
+        Language.ESPERANTO: 'eo',
+        Language.ESTONIAN: 'et',
+        Language.FINNISH: 'fi',
+        Language.FRENCH: 'fr',
+        Language.GANDA: 'lg',
+        Language.GEORGIAN: 'ka',
+        Language.GERMAN: 'de',
+        Language.GREEK: 'el',
+        Language.GUJARATI: 'gu',
+        Language.HEBREW: 'he',
+        Language.HINDI: 'hi',
+        Language.HUNGARIAN: 'hu',
+        Language.ICELANDIC: 'is',
+        Language.INDONESIAN: 'id',
+        Language.IRISH: 'ga',
+        Language.ITALIAN: 'it',
+        Language.JAPANESE: 'ja',
+        Language.KAZAKH: 'kk',
+        Language.KOREAN: 'ko',
+        Language.LATIN: 'la',
+        Language.LATVIAN: 'lv',
+        Language.LITHUANIAN: 'lt',
+        Language.MACEDONIAN: 'mk',
+        Language.MALAY: 'ms',
+        Language.MAORI: 'mi',
+        Language.MARATHI: 'mr',
+        Language.MONGOLIAN: 'mn',
+        Language.NYNORSK: 'nn',
+        Language.PERSIAN: 'fa',
+        Language.POLISH: 'pl',
+        Language.PORTUGUESE: 'pt',
+        Language.PUNJABI: 'pa',
+        Language.ROMANIAN: 'ro',
+        Language.RUSSIAN: 'ru',
+        Language.SERBIAN: 'sr',
+        Language.SHONA: 'sn',
+        Language.SLOVAK: 'sk',
+        Language.SLOVENE: 'sl',
+        Language.SOMALI: 'so',
+        Language.SOTHO: 'st',
+        Language.SPANISH: 'es',
+        Language.SWAHILI: 'sw',
+        Language.SWEDISH: 'sv',
+        Language.TAGALOG: 'tl',
+        Language.TAMIL: 'ta',
+        Language.TELUGU: 'te',
+        Language.THAI: 'th',
+        Language.TSONGA: 'ts',
+        Language.TSWANA: 'tn',
+        Language.TURKISH: 'tr',
+        Language.UKRAINIAN: 'uk',
+        Language.URDU: 'ur',
+        Language.VIETNAMESE: 'vi',
+        Language.WELSH: 'cy',
+        Language.XHOSA: 'xh',
+        Language.YORUBA: 'yo',
+        Language.ZULU: 'zu',
+    }
+    return language_iso_map.get(detected_language, None)
+
+# Example usage
+detected_language = Language.CHINESE  # Simulate a detected language
+detected_language_iso = language_to_iso(detected_language)
+print(f"The ISO 639-1 code for the detected language is: {detected_language_iso}")
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -121,9 +205,7 @@ def upload_file():
             detected_language_iso = ''
             
             # Compare enum directly instead of converting to string for comparison
-            if detected_language == Language.CHINESE:
-                detected_language_iso = 'zh'
-                print(detected_language_iso)
+            detected_language_iso = language_to_iso(detected_language)
             
             # Check if the detected language ISO code matches the source language for translation
             if detected_language_iso == source_lang:
