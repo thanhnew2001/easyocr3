@@ -6,3 +6,7 @@ Pillow  # Important for image processing, used by torchvision.
 numpy  # Likely used in your model or data processing.
 lmdb
 natsort
+easyocr
+requests
+transformers
+ctranslate2  # Assumed for translation models, adjust if different
