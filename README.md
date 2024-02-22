@@ -16,6 +16,7 @@ _Steps: _
 curl -X POST -F "file=@chen.jpg" -F "source_lang=zh" -F "target_lang=en"  http://localhost:5000/upload --output result16.jpg
 
 **Source file:**
+1. Download here: https://github.com/thanhnew2001/easyocr3/blob/master/chen.jpg
 
 ![chen](https://github.com/thanhnew2001/easyocr3/assets/3261272/38c65902-7318-49c5-9574-c0a25622ea6a)
 
