@@ -117,7 +117,7 @@ def upload_file():
             text = detection[1]
             print(text)
             detected_language = detect_language_all_languages(text)
-            if detected_language == 'LANGUAGE.Chinese':
+            if detected_language == 'Language.CHINESE':
                 detected_language = 'zh'
             if detected_language == source_lang  :
                 # translate:
@@ -125,14 +125,15 @@ def upload_file():
             else:
                 translated_text = text
 
-            # Draw a semi-transparent rectangle behind text
-            draw.rectangle([top_left, bottom_right], fill=(255, 255, 255, 128))
-            # Re-calculate text position if needed
-            text_width, text_height = textsize(text, font=font)
-            text_x = top_left[0] + (bottom_right[0] - top_left[0] - text_width) / 2
-            text_y = top_left[1] + (bottom_right[1] - top_left[1] - text_height) / 2
-            # Draw the reversed and resized text
-            draw.text((text_x, text_y), translated_text, fill='black', font=font)
+            if translated_text != text:
+                # Draw a semi-transparent rectangle behind text
+                draw.rectangle([top_left, bottom_right], fill=(255, 255, 255, 128))
+                # Re-calculate text position if needed
+                text_width, text_height = textsize(text, font=font)
+                text_x = top_left[0] + (bottom_right[0] - top_left[0] - text_width) / 2
+                text_y = top_left[1] + (bottom_right[1] - top_left[1] - text_height) / 2
+                # Draw the reversed and resized text
+                draw.text((text_x, text_y), translated_text, fill='black', font=font)
 
         # Before saving the image, convert from RGBA to RGB if necessary
         if image.mode == 'RGBA':
