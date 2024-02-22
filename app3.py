@@ -28,7 +28,26 @@ def textsize(text, font):
     draw = ImageDraw.Draw(im)
     _, _, width, height = draw.textbbox((0, 0), text=text, font=font)
     return width, height
-    
+
+from langdetect import detect
+
+def recognize_language(text):
+    try:
+        # Detect the language of the text
+        language = detect(text)
+        return language
+    except Exception as e:
+        return f"An error occurred: {str(e)}"
+
+# Test the function
+text = "今天是美好的一天"
+detected_language = recognize_language(text)
+print(f"The language of the text '{text}' is: {detected_language}")
+text = "Today is a good day"
+detected_language = recognize_language(text)
+print(f"The language of the text '{text}' is: {detected_language}")
+
+
 @app.route('/upload', methods=['POST'])
 def upload_file():
     source_lang = request.form.get('source_lang', 'en')  # Default to English if no language is provided
@@ -67,7 +86,7 @@ def upload_file():
             top_left = tuple(map(int, detection[0][0]))
             bottom_right = tuple(map(int, detection[0][2]))
             text = detection[1]
-
+            print(text)
             # translate:
             translated_text = translate_text(text, source_lang, target_lang)
 
