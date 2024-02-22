@@ -1,3 +1,5 @@
+import os
+import requests
 from flask import Flask, request, make_response, send_file
 import easyocr
 from PIL import Image, ImageDraw, ImageFont
@@ -9,6 +11,31 @@ app = Flask(__name__)
 # Initialize the EasyOCR reader
 reader = easyocr.Reader(['ch_sim', 'en'], gpu=False)
 
+# Function to ensure font is downloaded
+def ensure_font_downloaded():
+    font_path = "NotoSans-Regular.ttf"  # Font file name
+    font_url = "https://noto-website-2.storage.googleapis.com/pkgs/NotoSans-unhinted.zip"  # URL to download font
+
+    if not os.path.exists(font_path):
+        # Download the font ZIP file
+        print("Downloading font...")
+        response = requests.get(font_url)
+        zip_path = "NotoSans.zip"
+
+        # Save the ZIP file
+        with open(zip_path, "wb") as zip_file:
+            zip_file.write(response.content)
+
+        # Extract the font file
+        import zipfile
+        with zipfile.ZipFile(zip_path, "r") as zip_ref:
+            zip_ref.extractall(".")  # Extract all files to the current directory
+
+        # Clean up ZIP file after extraction
+        os.remove(zip_path)
+
+    return font_path  # Return the path to the font file
+
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
@@ -17,6 +44,9 @@ def upload_file():
     if file.filename == '':
         return 'No selected file'
     if file:
+        # Ensure the font is downloaded
+        font_path = ensure_font_downloaded()
+
         # Convert the uploaded file to an image object
         image_bytes = file.read()
         image = Image.open(io.BytesIO(image_bytes))
@@ -26,9 +56,8 @@ def upload_file():
 
         # Create a drawing context on the image
         draw = ImageDraw.Draw(image)
-        # Use the Noto font for multi-language support
-        noto_font_path = "path/to/your/NotoSans-Regular.ttf"  # Update this with actual path
-        font = ImageFont.truetype(noto_font_path, 40)
+        font = ImageFont.truetype(font_path, 40)  # Use the downloaded font
+
 
         for detection in detections:
             top_left = tuple(map(int, detection[0][0]))
