@@ -88,6 +88,8 @@ def upload_file():
             text = detection[1]
             print(text)
             detected_language = recognize_language(text)
+            if detected_language == 'zh-cn':
+                detected_language = 'zh'
             if detected_language == source_lang  :
                 # translate:
                 translated_text = translate_text(text, source_lang, target_lang)
