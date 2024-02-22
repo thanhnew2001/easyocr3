@@ -31,16 +31,17 @@ def upload_file():
         font = ImageFont.truetype("arial.ttf", font_size)
 
         for detection in detections:
-            top_left, _, bottom_right, _ = detection[0]
-            original_text = detection[1]
-
+            # Extract the bounding box coordinates
+            top_left = tuple(map(int, detection[0][0]))
+            bottom_right = tuple(map(int, detection[0][2]))
+        
+            # Ensure we have the correct format for the coordinates
+            # (i.e., ((x1, y1), (x2, y2)) for the top-left and bottom-right corners)
+            box = [top_left, bottom_right]
+        
             # Shade original text area: draw a rectangle over the detected area
-            draw.rectangle([top_left, bottom_right], fill=(255, 255, 255, 128))
-
-            # Reverse the detected text and increase text size
-            text = original_text[::-1]
-            # Draw the reversed and enlarged text
-            draw.text(top_left, text, fill='black', font=font)
+            draw.rectangle(box, fill=(255, 255, 255, 128))  # Use the corrected 'box' variable
+        
 
         # Save the modified image to a byte stream
         img_byte_arr = io.BytesIO()
