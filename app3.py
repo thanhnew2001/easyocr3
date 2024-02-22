@@ -117,10 +117,11 @@ def upload_file():
             text = detection[1]
             print(text)
             detected_language = detect_language_all_languages(text)
-            if detected_language.strip() == 'Language.CHINESE':
-                detected_language = 'zh'
-            print(detected_language)
-            if detected_language == source_lang  :
+ 
+            if detected_language.name == 'Language.CHINESE':
+                detected_language_iso = 'zh'
+                print(detected_language_iso)
+            if detected_language_iso == source_lang  :
                 # translate:
                 translated_text = translate_text(text, source_lang, target_lang)
             else:
