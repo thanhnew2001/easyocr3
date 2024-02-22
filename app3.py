@@ -5,11 +5,23 @@ import easyocr
 from PIL import Image, ImageDraw, ImageFont
 import io
 import numpy as np
+from hf_hub_ctranslate2 import MultiLingualTranslatorCT2fromHfHub
+from transformers import AutoTokenizer
+
 
 app = Flask(__name__)
 
-# Initialize the EasyOCR reader
-reader = easyocr.Reader(['ch_sim', 'en'], gpu=False)
+# Transalte
+model_m2m = MultiLingualTranslatorCT2fromHfHub(
+    model_name_or_path="michaelfeil/ct2fast-m2m100_1.2B",
+    device="cuda",
+    compute_type="int8_float16",
+    tokenizer=AutoTokenizer.from_pretrained("facebook/m2m100_1.2B")
+)
+
+def translate_text(sentences, src_lang, tgt_lang):
+    outputs = model_m2m.generate([sentences], src_lang=[src_lang], tgt_lang=[tgt_lang])
+    return outputs[0]
 
 def textsize(text, font):
     im = Image.new(mode="P", size=(0, 0))
@@ -17,33 +29,15 @@ def textsize(text, font):
     _, _, width, height = draw.textbbox((0, 0), text=text, font=font)
     return width, height
     
-# Function to ensure font is downloaded
-def ensure_font_downloaded():
-    font_path = "NotoSansSC-Regular.otf"  # Font file name
-    font_url = "https://noto-website-2.storage.googleapis.com/pkgs/NotoSans-unhinted.zip"  # URL to download font
-
-    if not os.path.exists(font_path):
-        # Download the font ZIP file
-        print("Downloading font...")
-        response = requests.get(font_url)
-        zip_path = "NotoSans.zip"
-
-        # Save the ZIP file
-        with open(zip_path, "wb") as zip_file:
-            zip_file.write(response.content)
-
-        # Extract the font file
-        import zipfile
-        with zipfile.ZipFile(zip_path, "r") as zip_ref:
-            zip_ref.extractall(".")  # Extract all files to the current directory
-
-        # Clean up ZIP file after extraction
-        os.remove(zip_path)
-
-    return font_path  # Return the path to the font file
-
 @app.route('/upload', methods=['POST'])
 def upload_file():
+    source_lang = request.form.get('source_lang', 'en')  # Default to English if no language is provided
+    target_lang = request.form.get('target_lang', 'es')  # Default to English if no language is provided
+
+    # Initialize the EasyOCR reader. Only support 1 language as this is a translation
+    languages = [source_lang]
+    reader = easyocr.Reader(languages, gpu=True)  # Adjust GPU according to your setup
+ 
     if 'file' not in request.files:
         return 'No file part'
     file = request.files['file']
@@ -51,7 +45,7 @@ def upload_file():
         return 'No selected file'
     if file:
         # Ensure the font is downloaded
-        font_path = ensure_font_downloaded()
+         font_path = "NotoSansSC-Regular.otf"  # Font file name
 
         # Convert the uploaded file to an image object
         image_bytes = file.read()
@@ -64,12 +58,14 @@ def upload_file():
         draw = ImageDraw.Draw(image)
         font = ImageFont.truetype(font_path, 40)  # Use the downloaded font
 
-
         for detection in detections:
             top_left = tuple(map(int, detection[0][0]))
             bottom_right = tuple(map(int, detection[0][2]))
             text = detection[1]
-            print(text)
+
+            # translate:
+            translated_text = translate_text(text, source_lang, target_lang)
+
 
             # Draw a semi-transparent rectangle behind text
             draw.rectangle([top_left, bottom_right], fill=(255, 255, 255, 128))
