@@ -7,7 +7,7 @@ import numpy as np
 app = Flask(__name__)
 
 # Initialize EasyOCR reader
-reader = easyocr.Reader(['ch_sim', 'en'], gpu=False)  # Adjust gpu according to your setup
+reader = easyocr.Reader(['ch_sim', 'en'], gpu=True)  # Adjust gpu according to your setup
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
