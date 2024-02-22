@@ -13,7 +13,7 @@ _Steps: _
 3. Run: python3 app3.py
 4. Test:
 
-curl -X POST -F "file=@chen.png" -F "source_lang=zh" -F "target_lang=en"  http://localhost:5000/upload --output result16.jpg
+curl -X POST -F "file=@chen.jpg" -F "source_lang=zh" -F "target_lang=en"  http://localhost:5000/upload --output result16.jpg
 
 **Source file:**
 
@@ -21,6 +21,7 @@ curl -X POST -F "file=@chen.png" -F "source_lang=zh" -F "target_lang=en"  http:/
 
 
 **Results:**
+
 ![result16](https://github.com/thanhnew2001/easyocr3/assets/3261272/7d2c58e8-ef6e-41fb-82c7-d2d2d1cde944)
 
 
