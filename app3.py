@@ -88,7 +88,7 @@ def upload_file():
     target_lang = request.form.get('target_lang', 'es')  # Default to English if no language is provided
 
     # Initialize the EasyOCR reader. Only support 1 language as this is a translation
-    languages = [ocr_source_lang]
+    languages = ['en',ocr_source_lang]
     reader = easyocr.Reader(languages, gpu=True)  # Adjust GPU according to your setup
  
     if 'file' not in request.files:
