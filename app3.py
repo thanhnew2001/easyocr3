@@ -116,8 +116,8 @@ def upload_file():
             bottom_right = tuple(map(int, detection[0][2]))
             text = detection[1]
             print(text)
-            detected_language = recognize_language(text)
-            if detected_language == 'zh-cn':
+            detected_language = detect_language_all_languages(text)
+            if detected_language == 'LANGUAGE.Chinese':
                 detected_language = 'zh'
             if detected_language == source_lang  :
                 # translate:
