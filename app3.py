@@ -43,7 +43,7 @@ def recognize_language(text):
 text = "今天是美好的一天"
 detected_language = recognize_language(text)
 print(f"The language of the text '{text}' is: {detected_language}")
-text = "Today is a good day"
+text = "How are you today"
 detected_language = recognize_language(text)
 print(f"The language of the text '{text}' is: {detected_language}")
 
