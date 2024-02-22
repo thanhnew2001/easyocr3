@@ -33,7 +33,7 @@ def textsize(text, font):
 def upload_file():
     source_lang = request.form.get('source_lang', 'en')  # Default to English if no language is provided
     if source_lang == 'zh':
-        ocr_source_lang = 'zh_sim'
+        ocr_source_lang = 'ch_sim'
     else:
         ocr_source_lang = source_lang
         
