@@ -32,7 +32,7 @@ def upload_file():
             bottom_right = tuple(detection[0][2])
             text = detection[1]
             draw.rectangle([top_left, bottom_right], outline='red')
-            draw.text(top_left, text, fill='red')
+            draw.text(top_left, text+"?", fill='red')
 
         # Convert the Image object back to bytes
         img_byte_arr = io.BytesIO()
