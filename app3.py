@@ -38,7 +38,8 @@ def upload_file():
         for detection in detections:
             top_left = tuple(map(int, detection[0][0]))
             bottom_right = tuple(map(int, detection[0][2]))
-            text = detection[1][::-1]  # Reverse the detected text
+            text = detection[1]
+            print(text)
 
             # Draw a semi-transparent rectangle behind text
             draw.rectangle([top_left, bottom_right], fill=(255, 255, 255, 128))
