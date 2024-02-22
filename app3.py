@@ -19,7 +19,7 @@ def textsize(text, font):
     
 # Function to ensure font is downloaded
 def ensure_font_downloaded():
-    font_path = "NotoSans-Thin.ttf"  # Font file name
+    font_path = "NotoSansSC-Regular.otf"  # Font file name
     font_url = "https://noto-website-2.storage.googleapis.com/pkgs/NotoSans-unhinted.zip"  # URL to download font
 
     if not os.path.exists(font_path):
