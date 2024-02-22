@@ -37,7 +37,7 @@ def upload_file():
             # Draw a semi-transparent rectangle behind text
             draw.rectangle([top_left, bottom_right], fill=(255, 255, 255, 128))
             # Re-calculate text position if needed
-            text_width, text_height = draw.textsize(text, font=font)
+            text_width, text_height = draw.textlength(text, font=font)
             text_x = top_left[0] + (bottom_right[0] - top_left[0] - text_width) / 2
             text_y = top_left[1] + (bottom_right[1] - top_left[1] - text_height) / 2
             # Draw the reversed and resized text
