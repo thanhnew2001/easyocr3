@@ -3,6 +3,8 @@ import os
 import easyocr
 from PIL import Image
 import io
+import numpy as np
+
 
 app = Flask(__name__)
 
