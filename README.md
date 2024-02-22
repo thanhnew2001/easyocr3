@@ -10,28 +10,19 @@ _Steps: _
 1. Clone repo: git clone https://github.com/thanhnew2001/easyocr3
 
 2. Install: pip install -r requirements.txt
-3. Run: python3 app.py
+3. Run: python3 app3.py
 4. Test:
 
-curl -X POST -F "files=@demo_image/demo_1.png" -F "files=@demo_image/demo_2.png" http://localhost:5000/upload 
+curl -X POST -F "file=@chen.png" -F "source_lang=zh" -F "target_lang=en"  http://localhost:5000/upload --output result16.jpg
+
+**Source file:**
+
+![chen](https://github.com/thanhnew2001/easyocr3/assets/3261272/38c65902-7318-49c5-9574-c0a25622ea6a)
+
 
 **Results:**
-{
-  "results": [
-    {
-      "filename": "demo_1.png",
-      "recognized_labels": [
-        "available"
-      ]
-    },
-    {
-      "filename": "demo_2.png",
-      "recognized_labels": [
-        "shakeshack"
-      ]
-    }
-  ]
-}
+![result16](https://github.com/thanhnew2001/easyocr3/assets/3261272/7d2c58e8-ef6e-41fb-82c7-d2d2d1cde944)
+
 
 
 **List of language code:**
