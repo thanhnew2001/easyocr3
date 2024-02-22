@@ -49,11 +49,19 @@ def upload_file():
             # Draw the reversed and resized text
             draw.text((text_x, text_y), text, fill='black', font=font)
 
-        # Save the modified image to a byte stream
+        # Before saving the image, convert from RGBA to RGB if necessary
+        if image.mode == 'RGBA':
+            # Create a new background image in RGB mode with white background
+            background = Image.new('RGB', image.size, (255, 255, 255))
+            # Paste the original image onto the background
+            background.paste(image, mask=image.split()[3])  # 3 is the index of the alpha channel
+            image = background  # Replace the original image with the background
+        
+        # Now save the image as JPEG
         img_byte_arr = io.BytesIO()
         image.save(img_byte_arr, format='JPEG')
         img_byte_arr.seek(0)  # Reset the stream position to the start
-
+        
         # Create and send the response
         response = make_response(img_byte_arr.getvalue())
         response.headers.set('Content-Type', 'image/jpeg')
