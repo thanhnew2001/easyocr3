@@ -40,7 +40,7 @@ def recognize_language(text):
         return f"An error occurred: {str(e)}"
 
 # Test the function
-text = "今天是美好的一天"
+text = "今"
 detected_language = recognize_language(text)
 print(f"The language of the text '{text}' is: {detected_language}")
 text = "How are you today"
@@ -87,9 +87,12 @@ def upload_file():
             bottom_right = tuple(map(int, detection[0][2]))
             text = detection[1]
             print(text)
-            # translate:
-            translated_text = translate_text(text, source_lang, target_lang)
-
+            detected_language = recognize_language(text)
+            if detected_language != source_lang  :
+                # translate:
+                translated_text = text
+            else:
+                translated_text = translate_text(text, source_lang, target_lang)
 
             # Draw a semi-transparent rectangle behind text
             draw.rectangle([top_left, bottom_right], fill=(255, 255, 255, 128))
