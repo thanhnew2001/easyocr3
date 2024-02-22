@@ -1,4 +1,4 @@
-from flask import send_file, Flask, request, after_this_request
+Tfrom flask import send_file, Flask, request, after_this_request
 import os
 import easyocr
 from PIL import Image
@@ -7,7 +7,7 @@ import io
 app = Flask(__name__)
 
 # Ensure the reader is loaded once when the server starts
-reader = easyocr.Reader(['ch_sim', 'en'], gpu=False)  # Adjust gpu according to your setup
+reader = easyocr.Reader(['ch_sim', 'en'], gpu=True)  # Adjust gpu according to your setup
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
