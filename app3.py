@@ -50,7 +50,7 @@ def detect_language_all_languages(text):
     detected_language = detector.detect_language_of(text)
     
     # Return the name of the detected language
-    return detected_language.name
+    return detected_language
 
 # Example usage
 text = "languages are awesome"
