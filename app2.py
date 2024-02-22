@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 # Initialize the EasyOCR reader
 # Note: This is a heavy operation, so do this only once and keep it outside of your request handling
-reader = easyocr.Reader(['ch_sim', 'en'], gpu=False)  # Set gpu=False if you are using CPU
+reader = easyocr.Reader(['ch_sim', 'en'], gpu=True)  # Set gpu=False if you are using CPU
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
