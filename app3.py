@@ -39,7 +39,7 @@ def textsize(text, font):
 #     except Exception as e:
 #         return f"An error occurred: {str(e)}"
 
-from lingua import Language, LanguageDetectorBuilder
+from lingua import  LanguageDetectorBuilder
 
 def detect_language(text):
     # Build the language detector
