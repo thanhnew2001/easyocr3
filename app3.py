@@ -9,6 +9,12 @@ app = Flask(__name__)
 # Initialize the EasyOCR reader. Note: Adjust 'gpu=False' if you don't have GPU support.
 reader = easyocr.Reader(['ch_sim', 'en'], gpu=True)
 
+def textsize(text, font):
+    im = Image.new(mode="P", size=(0, 0))
+    draw = ImageDraw.Draw(im)
+    _, _, width, height = draw.textbbox((0, 0), text=text, font=font)
+    return width, height
+    
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
@@ -37,7 +43,7 @@ def upload_file():
             # Draw a semi-transparent rectangle behind text
             draw.rectangle([top_left, bottom_right], fill=(255, 255, 255, 128))
             # Re-calculate text position if needed
-            text_width, text_height = draw.textlength(text, font=font)
+            text_width, text_height = textsize(text, font=font)
             text_x = top_left[0] + (bottom_right[0] - top_left[0] - text_width) / 2
             text_y = top_left[1] + (bottom_right[1] - top_left[1] - text_height) / 2
             # Draw the reversed and resized text
