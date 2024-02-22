@@ -10,3 +10,5 @@ easyocr
 requests
 transformers
 ctranslate2  # Assumed for translation models, adjust if different
+lingua-language-detector
+sentencepiece
