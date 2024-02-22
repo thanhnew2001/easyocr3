@@ -45,7 +45,7 @@ def upload_file():
         return 'No selected file'
     if file:
         # Ensure the font is downloaded
-         font_path = "NotoSansSC-Regular.otf"  # Font file name
+        font_path = "NotoSansSC-Regular.otf"  # Font file name
 
         # Convert the uploaded file to an image object
         image_bytes = file.read()
@@ -74,7 +74,7 @@ def upload_file():
             text_x = top_left[0] + (bottom_right[0] - top_left[0] - text_width) / 2
             text_y = top_left[1] + (bottom_right[1] - top_left[1] - text_height) / 2
             # Draw the reversed and resized text
-            draw.text((text_x, text_y), text, fill='black', font=font)
+            draw.text((text_x, text_y), translated_text, fill='black', font=font)
 
         # Before saving the image, convert from RGBA to RGB if necessary
         if image.mode == 'RGBA':
