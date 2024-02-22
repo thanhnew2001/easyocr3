@@ -119,12 +119,14 @@ def upload_file():
             detected_language = detect_language_all_languages(text)
             if detected_language == 'Language.CHINESE':
                 detected_language = 'zh'
+            print(detected_language)
             if detected_language == source_lang  :
                 # translate:
                 translated_text = translate_text(text, source_lang, target_lang)
             else:
                 translated_text = text
 
+            print(translated_text)
             if translated_text != text:
                 # Draw a semi-transparent rectangle behind text
                 draw.rectangle([top_left, bottom_right], fill=(255, 255, 255, 128))
