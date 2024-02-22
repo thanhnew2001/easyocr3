@@ -1,4 +1,4 @@
-Tfrom flask import send_file, Flask, request, after_this_request
+from flask import send_file, Flask, request, after_this_request
 import os
 import easyocr
 from PIL import Image
