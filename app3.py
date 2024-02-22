@@ -29,15 +29,39 @@ def textsize(text, font):
     _, _, width, height = draw.textbbox((0, 0), text=text, font=font)
     return width, height
 
-from langdetect import detect
+# from langdetect import detect
 
-def recognize_language(text):
-    try:
-        # Detect the language of the text
-        language = detect(text)
-        return language
-    except Exception as e:
-        return f"An error occurred: {str(e)}"
+# def recognize_language(text):
+#     try:
+#         # Detect the language of the text
+#         language = detect(text)
+#         return language
+#     except Exception as e:
+#         return f"An error occurred: {str(e)}"
+
+from lingua import Language, LanguageDetectorBuilder
+
+def detect_language(text):
+    # Build the language detector
+    detector = LanguageDetectorBuilder.from_all_languages().build()
+    
+    # Detect the language of the provided text
+    detected_language = detector.detect_language_of(text)
+    
+    # Convert the detected language to a string
+    language_str = detected_language.value
+    
+    return language_str
+
+# Example usage
+text = "This is a sample sentence."
+detected_language = detect_language(text)
+print(f"The detected language is: {detected_language}")
+
+# Example usage
+text = "一天"
+detected_language = detect_language(text)
+print(f"The detected language is: {detected_language}")
 
 # Test the function
 text = "今"
