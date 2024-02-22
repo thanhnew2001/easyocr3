@@ -6,15 +6,9 @@ import numpy as np
 
 app = Flask(__name__)
 
-# Initialize the EasyOCR reader. Note: Adjust 'gpu=False' if you don't have GPU support.
-reader = easyocr.Reader(['ch_sim', 'en'], gpu=True)
+# Initialize the EasyOCR reader
+reader = easyocr.Reader(['ch_sim', 'en'], gpu=False)
 
-def textsize(text, font):
-    im = Image.new(mode="P", size=(0, 0))
-    draw = ImageDraw.Draw(im)
-    _, _, width, height = draw.textbbox((0, 0), text=text, font=font)
-    return width, height
-    
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
@@ -32,8 +26,9 @@ def upload_file():
 
         # Create a drawing context on the image
         draw = ImageDraw.Draw(image)
-        # Adjust the path and size as needed for your environment
-        font = ImageFont.truetype("arial.ttf", 40)
+        # Use the Noto font for multi-language support
+        noto_font_path = "path/to/your/NotoSans-Regular.ttf"  # Update this with actual path
+        font = ImageFont.truetype(noto_font_path, 40)
 
         for detection in detections:
             top_left = tuple(map(int, detection[0][0]))
