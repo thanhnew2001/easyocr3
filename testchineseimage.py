@@ -5,7 +5,7 @@ image = Image.new('RGB', (200, 60), color=(255, 255, 255))
 draw = ImageDraw.Draw(image)
 
 # Use the downloaded Noto Sans CJK SC font
-font = ImageFont.truetype('NotoSans-Thin.ttf', 30)  # Update path and filename as necessary
+font = ImageFont.truetype('NotoSansSC-Regular.otf', 30)  # Update path and filename as necessary
 
 # Draw text
 draw.text((10, 10), '测试中文', fill=(0, 0, 0), font=font)
