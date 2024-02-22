@@ -39,36 +39,41 @@ def textsize(text, font):
 #     except Exception as e:
 #         return f"An error occurred: {str(e)}"
 
-from lingua import  LanguageDetectorBuilder
+from lingua import LanguageDetectorBuilder, Language
 
-def detect_language(text):
-    # Build the language detector
+# Function for language detection using all available languages in lingua-py
+def detect_language_all_languages(text):
+    # Build the language detector using all available languages
     detector = LanguageDetectorBuilder.from_all_languages().build()
     
     # Detect the language of the provided text
     detected_language = detector.detect_language_of(text)
     
-    # Convert the detected language to a string
-    language_str = detected_language.value
-    
-    return language_str
+    # Return the name of the detected language
+    return detected_language.name
+
+# Example usage
+text = "languages are awesome"
+detected_language = detect_language_all_languages(text)
+print(f"The detected language is: {detected_language}")
+
 
 # Example usage
 text = "This is a sample sentence."
-detected_language = detect_language(text)
+detected_language = detect_language_all_languages(text)
 print(f"The detected language is: {detected_language}")
 
 # Example usage
 text = "一天"
-detected_language = detect_language(text)
+detected_language = detect_language_all_languages(text)
 print(f"The detected language is: {detected_language}")
 
 # Test the function
 text = "今"
-detected_language = recognize_language(text)
+detected_language = detect_language_all_languages(text)
 print(f"The language of the text '{text}' is: {detected_language}")
 text = "How are you today"
-detected_language = recognize_language(text)
+detected_language = detect_language_all_languages(text)
 print(f"The language of the text '{text}' is: {detected_language}")
 
 
