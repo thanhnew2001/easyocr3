@@ -116,16 +116,23 @@ def upload_file():
             bottom_right = tuple(map(int, detection[0][2]))
             text = detection[1]
             print(text)
+                 # Assuming detect_language_all_languages returns an enum instance of Language
             detected_language = detect_language_all_languages(text)
             detected_language_iso = ''
-            if detected_language.name == 'Language.CHINESE':
+            
+            # Compare enum directly instead of converting to string for comparison
+            if detected_language == Language.CHINESE:
                 detected_language_iso = 'zh'
                 print(detected_language_iso)
-            if detected_language_iso == source_lang  :
-                # translate:
+            
+            # Check if the detected language ISO code matches the source language for translation
+            if detected_language_iso == source_lang:
+                # Translate the text from source_lang to target_lang
                 translated_text = translate_text(text, source_lang, target_lang)
             else:
+                # If languages match or detection is unsure, keep the original text
                 translated_text = text
+
 
             print(translated_text)
             if translated_text != text:
