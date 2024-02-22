@@ -11,6 +11,12 @@ app = Flask(__name__)
 # Initialize the EasyOCR reader
 reader = easyocr.Reader(['ch_sim', 'en'], gpu=False)
 
+def textsize(text, font):
+    im = Image.new(mode="P", size=(0, 0))
+    draw = ImageDraw.Draw(im)
+    _, _, width, height = draw.textbbox((0, 0), text=text, font=font)
+    return width, height
+    
 # Function to ensure font is downloaded
 def ensure_font_downloaded():
     font_path = "NotoSans-Regular.ttf"  # Font file name
