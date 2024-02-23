@@ -22,10 +22,12 @@ def translate_text(sentences, src_lang, tgt_lang):
     outputs = model_m2m.generate([sentences], src_lang=[src_lang], tgt_lang=[tgt_lang])
     return outputs[0]
 
+
 def textsize(text, font):
-    im = Image.new(mode="P", size=(10, 10))  # Small image for text size measurement
+    im = Image.new(mode="P", size=(0, 0))
     draw = ImageDraw.Draw(im)
-    return draw.textsize(text, font=font)
+    _, _, width, height = draw.textbbox((0, 0), text=text, font=font)
+    return width, height
 
 from lingua import LanguageDetectorBuilder, Language
 
