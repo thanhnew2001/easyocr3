@@ -167,6 +167,19 @@ def fit_text_to_box(text, font_path, box_width, box_height):
     font = ImageFont.truetype(font_path, font_size)
     text_width, text_height = font.getsize(text)
     
+def fit_text_to_box(text, font_path, box_width, box_height):
+    font_size = 100  # Start with a large font size
+    font = ImageFont.truetype(font_path, font_size)
+    text_width, text_height = font.getsize(text)  # Correct method call
+
+    # Scale down font size until the text fits the box
+    while text_width > box_width or text_height > box_height and font_size > 1:
+        font_size -= 1
+        font = ImageFont.truetype(font_path, font_size)
+        text_width, text_height = font.getsize(text)
+
+    return font
+    
     # Decrease the font size until the text fits within the box
     while text_width > box_width or text_height > box_height:
         font_size -= 1  # Decrease the font size
