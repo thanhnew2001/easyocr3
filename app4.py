@@ -214,6 +214,8 @@ def upload_file():
             top_left = tuple(map(int, detection[0][0]))
             bottom_right = tuple(map(int, detection[0][2]))
             text = detection[1]
+            box_width, box_height = bottom_right[0] - top_left[0], bottom_right[1] - top_left[1]
+
             font = fit_text_to_box(text, font_path, box_width, box_height)
     
             print(text)
