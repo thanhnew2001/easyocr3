@@ -193,7 +193,7 @@ def upload_file():
 
         # Create a drawing context on the image
         draw = ImageDraw.Draw(image)
-        font = ImageFont.truetype(font_path, 25)  # Use the downloaded font
+        font = ImageFont.truetype(font_path, 15)  # Use the downloaded font
 
         for detection in detections:
             top_left = tuple(map(int, detection[0][0]))
