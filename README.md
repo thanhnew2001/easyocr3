@@ -25,6 +25,28 @@ curl -X POST -F "file=@chen.jpg" -F "source_lang=zh" -F "target_lang=en"  http:/
 
 ![result16](https://github.com/thanhnew2001/easyocr3/assets/3261272/7d2c58e8-ef6e-41fb-82c7-d2d2d1cde944)
 
+**New version can scale the size of text:**
+
+![image](https://github.com/thanhnew2001/easyocr3/assets/3261272/d96920c7-2ac4-462a-9dd8-2afc60c2f755)
+
+![result25](https://github.com/thanhnew2001/easyocr3/assets/3261272/4ff1f384-31fa-4320-be43-bfe4ba70a8be)
+
+![image](https://github.com/thanhnew2001/easyocr3/assets/3261272/c58b45ee-aa0c-4ec2-9f71-97c3ea4cb50e)
+
+![result26](https://github.com/thanhnew2001/easyocr3/assets/3261272/00350cd6-a32c-41f5-bb9d-adcf6274e45f)
+
+<img width="425" alt="image" src="https://github.com/thanhnew2001/easyocr3/assets/3261272/a73accbb-7d63-4b70-9508-d90100b545de">
+
+![result31](https://github.com/thanhnew2001/easyocr3/assets/3261272/df0e4956-b953-4b10-a8a8-de6f13842620)
+
+![image](https://github.com/thanhnew2001/easyocr3/assets/3261272/49388d27-0086-4497-841e-7cd257c933a2)
+
+![result27](https://github.com/thanhnew2001/easyocr3/assets/3261272/d84d902f-7dfd-450d-8b06-6b0048a48395)
+
+
+
+
+
 
 
 **List of language code:**
