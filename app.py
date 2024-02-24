@@ -248,5 +248,56 @@ def upload_file():
 
     return 'Something went wrong'
 
+
+@app.route('/upload_textonly', methods=['POST'])
+def upload_textonly():
+    source_lang = request.form.get('source_lang', 'en')  # Default source language
+    target_lang = request.form.get('target_lang', 'es')  # Default target language
+
+    # Initialize the EasyOCR reader with dynamic language support based on source language
+    ocr_source_lang = 'ch_sim' if source_lang == 'zh' else source_lang
+    reader = easyocr.Reader(['en', ocr_source_lang], gpu=True)
+
+    # Check if files were uploaded
+    files = request.files.getlist('file')
+    if not files:
+        return 'No files provided', 400
+
+    # Prepare a list to hold results for all processed images
+    results = []
+
+    for file in files:
+        if file:  # If a file is present
+            image_bytes = file.read()
+            image = Image.open(io.BytesIO(image_bytes))
+            detections = reader.readtext(np.array(image), detail=1)
+
+            # Process each detected piece of text
+            text_results = []
+            for detection in detections:
+                original_text = detection[1]
+                detected_language = detect_language_all_languages(original_text)
+                detected_language_iso = language_to_iso(detected_language)
+
+                if detected_language_iso == source_lang:
+                    translated_text = translate_text(original_text, source_lang, target_lang)
+                else:
+                    # If the detected language is the same as the target, keep original
+                    translated_text = original_text
+
+                text_results.append({
+                    'original_text': original_text,
+                    'translated_text': translated_text
+                })
+
+            # Add the file results to the overall results
+            results.append({
+                'file_name': file.filename,
+                'texts': text_results
+            })
+
+    return jsonify(results)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
