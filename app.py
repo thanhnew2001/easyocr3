@@ -7,9 +7,46 @@ import io
 import numpy as np
 from hf_hub_ctranslate2 import MultiLingualTranslatorCT2fromHfHub
 from transformers import AutoTokenizer
-
+from transformers import MarianMTModel, MarianTokenizer
 
 app = Flask(__name__)
+
+# Check if CUDA is available and set the device accordingly
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+# Define a mapping for directly supported language pairs
+direct_model_mapping = {
+    'en-vi': 'Eugenememe/netflix-en-vi',
+    'en-es': 'Eugenememe/netflix-en-es-100k',
+    'en-fr': 'Eugenememe/netflix-en-fr',
+    'en-de': 'Eugenememe/netflix-en-de',
+    'en-zh': 'Eugenememe/netflix-en-zh',
+
+    'vi-en': 'Eugenememe/netflix-vi-en',
+    'es-en': 'Eugenememe/netflix-es-en-100k',
+    'fr-en': 'Eugenememe/netflix-fr-en',
+    'de-en': 'Eugenememe/netflix-de-en',
+    'zh-en': 'Eugenememe/netflix-zh-en',
+
+    'ko-en': 'Eugenememe/netflix-ko-en',
+    'th-en': 'Eugenememe/netflix-th-en',
+    'ja-en': 'Eugenememe/netflix-ja-en',
+    # Add other directly supported language pairs here...
+}
+
+# Supported languages for intermediate translation
+#supported_langs = ['en', 'es', 'fr', 'it', 'de', 'zh', 'vi', 'ko', 'ja', 'th']
+supported_langs = ['en', 'es', 'fr', 'de', 'zh', 'vi', 'ko', 'th', 'ja']
+
+xtts_supported_langs = ['en', 'es', 'fr', 'de', 'it', 'pt', 'pl', 'tr', 'ru', 'nl', 'cs', 'ar', 'zh-cn', 'ja', 'hu', 'ko']
+
+HF_TOKEN = "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"
+# Pre-load models and tokenizers
+opus_models_tokenizers = {}
+for model_name in direct_model_mapping.values():
+    tokenizer_ = MarianTokenizer.from_pretrained(model_name, token= HF_TOKEN)
+    model_ = MarianMTModel.from_pretrained(model_name, token= HF_TOKEN).to(device)
+    opus_models_tokenizers[model_name] = (model_, tokenizer_)
 
 # Transalte
 model_m2m = MultiLingualTranslatorCT2fromHfHub(
@@ -22,6 +59,38 @@ model_m2m = MultiLingualTranslatorCT2fromHfHub(
 def translate_text(sentences, src_lang, tgt_lang):
     outputs = model_m2m.generate([sentences], src_lang=[src_lang], tgt_lang=[tgt_lang])
     return outputs[0]
+
+def translate_with_timing(text, source_lang, target_lang):
+    def perform_translation(text, model_name):
+        start_time = time.time()
+        model_, tokenizer_ = opus_models_tokenizers[model_name]
+        tokenized_text = tokenizer_.prepare_seq2seq_batch([text], return_tensors='pt').to(device)
+        translated = model_.generate(**tokenized_text)
+        translated_text = tokenizer_.batch_decode(translated, skip_special_tokens=True)[0]
+        end_time = time.time()
+        return translated_text, end_time - start_time
+    
+    if f"{source_lang}-{target_lang}" in ["en-ko", "en-th", "en-ja"]:
+        translated_text = translate_text(text, source_lang, target_lang)
+        return translated_text
+
+    if f"{source_lang}-{target_lang}" in direct_model_mapping:
+        # Direct translation
+        translated_text, time_taken = perform_translation(text, direct_model_mapping[f"{source_lang}-{target_lang}"])
+        print(f"Direct translation time ({source_lang}-{target_lang}): {time_taken:.4f} seconds")
+    elif source_lang in supported_langs and target_lang in supported_langs:
+        # Two-step translation via English
+        intermediate_text, time_taken_1 = perform_translation(text, direct_model_mapping[f"{source_lang}-en"])
+        final_text, time_taken_2 = perform_translation(intermediate_text, direct_model_mapping[f"en-{target_lang}"])
+        translated_text = final_text
+        total_time_taken = time_taken_1 + time_taken_2
+        print(f"2-step translation time ({source_lang}-en-{target_lang}): {total_time_taken:.4f} seconds")
+    else:
+        # use m2m instead
+        # translated_text = translate_text(text, source_lang, target_lang)
+        # raise ValueError(f"Unsupported language pair: {source_lang}-{target_lang}")
+        translated_text = translate_text(text, source_lang, target_lang)
+    return translated_text
 
 def textsize(text, font):
     im = Image.new(mode="P", size=(0, 0))
@@ -51,31 +120,7 @@ def detect_language_all_languages(text):
     
     # Return the name of the detected language
     return detected_language
-
-# Example usage
-text = "languages are awesome"
-detected_language = detect_language_all_languages(text)
-print(f"The detected language is: {detected_language}")
-
-
-# Example usage
-text = "This is a sample sentence."
-detected_language = detect_language_all_languages(text)
-print(f"The detected language is: {detected_language}")
-
-# Example usage
-text = "一天"
-detected_language = detect_language_all_languages(text)
-print(f"The detected language is: {detected_language}")
-
-# Test the function
-text = "今"
-detected_language = detect_language_all_languages(text)
-print(f"The language of the text '{text}' is: {detected_language}")
-text = "How are you today"
-detected_language = detect_language_all_languages(text)
-print(f"The language of the text '{text}' is: {detected_language}")
-
+    
 def language_to_iso(detected_language):
     language_iso_map = {
         Language.AFRIKAANS: 'af',
@@ -210,13 +255,13 @@ def upload_file():
             # Check if the detected language ISO code matches the source language for translation
             if detected_language_iso == source_lang:
                 # Translate the text from source_lang to target_lang
-                translated_text = translate_text(text, source_lang, target_lang)
+                
+                translated_text = translate_with_timing(text, source_lang, target_lang)
             else:
                 # If languages match or detection is unsure, keep the original text
                 translated_text = text
 
-
-            print(translated_text)
+            print(text + ': ' + translated_text)
             if translated_text != text:
                 # Draw a semi-transparent rectangle behind text
                 draw.rectangle([top_left, bottom_right], fill=(255, 255, 255, 128))
@@ -280,7 +325,7 @@ def upload_textonly():
                 detected_language_iso = language_to_iso(detected_language)
 
                 if detected_language_iso == source_lang:
-                    translated_text = translate_text(original_text, source_lang, target_lang)
+                    translated_text = translate_with_timing(original_text, source_lang, target_lang)
                 else:
                     # If the detected language is the same as the target, keep original
                     translated_text = original_text
