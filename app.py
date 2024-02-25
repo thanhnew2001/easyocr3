@@ -1,16 +1,21 @@
 import os
 import requests
-from flask import Flask, request, make_response, send_file
+import json
+from torch.nn import functional as F
+import base64
+import uuid 
+
+from flask import Flask, request, jsonify, make_response, send_file, render_template, Response, send_from_directory
+from flask_cors import CORS
+
 import easyocr
 from PIL import Image, ImageDraw, ImageFont
 import io
 import numpy as np
 from hf_hub_ctranslate2 import MultiLingualTranslatorCT2fromHfHub
-from transformers import AutoTokenizer
-from transformers import MarianMTModel, MarianTokenizer
+from transformers import MarianMTModel, MarianTokenizer, AutoTokenizer
 import torch
 import time
-
 
 app = Flask(__name__)
 
