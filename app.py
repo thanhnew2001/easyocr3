@@ -351,6 +351,26 @@ def upload_textonly():
 
     return jsonify(results)
 
+@app.route('/translate', methods=['GET', 'POST'])
+def translate():
+    if request.method == 'GET':
+        original_text = request.args.get('text', '')
+        source_lang = request.args.get('source_lang', 'en')
+        target_lang = request.args.get('target_lang', 'es')
+    else:  # POST
+        data = request.json
+        original_text = data.get('text', '')
+        source_lang = data.get('source_lang', 'en')
+        target_lang = data.get('target_lang', 'es')
+
+    translated_text = translate_with_timing(original_text, source_lang, target_lang)
+    return jsonify({
+        'original_text': original_text,
+        'source_lang': source_lang,
+        'target_lang': target_lang,
+        'translated_text': translated_text
+    })
+
 
 if __name__ == '__main__':
     app.run(debug=True)
