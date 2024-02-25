@@ -9,6 +9,8 @@ from hf_hub_ctranslate2 import MultiLingualTranslatorCT2fromHfHub
 from transformers import AutoTokenizer
 from transformers import MarianMTModel, MarianTokenizer
 import torch
+import time
+
 
 app = Flask(__name__)
 
